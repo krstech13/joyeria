@@ -1,12 +1,33 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { CartOffcanvasComponent } from './components/cart-offcanvas/cart-offcanvas.component';
+import { CartService } from './core/services/cart.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  standalone: true,
+  imports: [RouterOutlet, NavbarComponent, CartOffcanvasComponent],
+  template: `
+    <div class="min-h-screen">
+      <app-navbar (cartClick)="openCart()" />
+      
+      <main>
+        <router-outlet />
+      </main>
+      
+      <app-cart-offcanvas [(isOpen)]="cartIsOpen" />
+    </div>
+  `
 })
 export class App {
-  protected readonly title = signal('krs-tech');
+  private cartService = inject(CartService);
+  
+  get cartIsOpen() {
+    return this.cartService.isOpen;
+  }
+  
+  openCart(): void {
+    this.cartService.openCart();
+  }
 }

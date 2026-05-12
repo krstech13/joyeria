@@ -1,1 +1,301 @@
-/* You can add global styles to this file, and also import other style files */
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+/* ============================================
+   CSS VARIABLES - THEME SYSTEM
+   ============================================ */
+
+/* Light Theme (Default) */
+:root {
+  /* Luxury Gold Palette - Consistent across themes */
+  --gold: #D4AF37;
+  --gold-light: #E8D48B;
+  --gold-dark: #B8960C;
+  
+  /* Light Theme Colors */
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #F5F5F5;
+  --bg-tertiary: #FFFFFF;
+  --bg-gradient-start: #F8F8F8;
+  --bg-gradient-end: #F0F0F0;
+  
+  /* Text Colors */
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --text-muted: #6B6B6B;
+  --text-inverse: #FFFFFF;
+  
+  /* Border Colors */
+  --border-primary: #E0E0E0;
+  --border-secondary: #D0D0D0;
+  
+  /* Glassmorphism Variables - Light */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  --glass-shadow-hover: 0 12px 40px 0 rgba(0, 0, 0, 0.15);
+  
+  /* Accent Colors */
+  --accent-bg: rgba(212, 175, 55, 0.1);
+  --accent-border: rgba(212, 175, 55, 0.3);
+  
+  /* Transition */
+  --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark Theme */
+.dark {
+  --bg-primary: #0F0F0F;
+  --bg-secondary: #1A1A1A;
+  --bg-tertiary: #2A2A2A;
+  --bg-gradient-start: #0F0F0F;
+  --bg-gradient-end: #1A1A1A;
+  
+  /* Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #E0E0E0;
+  --text-muted: #A0A0A0;
+  --text-inverse: #1A1A1A;
+  
+  /* Border Colors */
+  --border-primary: #333333;
+  --border-secondary: #444444;
+  
+  /* Glassmorphism Variables - Dark */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-shadow-hover: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  
+  /* Accent Colors */
+  --accent-bg: rgba(212, 175, 55, 0.15);
+  --accent-border: rgba(212, 175, 55, 0.4);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+@layer base {
+  html {
+    transition: var(--theme-transition);
+  }
+  
+  body {
+    @apply font-sans antialiased;
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    transition: var(--theme-transition);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+    color: var(--text-primary);
+    transition: var(--theme-transition);
+  }
+  
+  p, span, div {
+    transition: var(--theme-transition);
+  }
+}
+
+/* ============================================
+   GLASSMORPHISM UTILITIES
+   ============================================ */
+
+@layer components {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: var(--theme-transition);
+  }
+  
+  .glass-card {
+    @apply glass rounded-2xl p-6;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--glass-shadow-hover);
+  }
+  
+  .glass-nav {
+    @apply glass sticky top-0 z-50;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  
+  .glass-button {
+    @apply glass px-6 py-3 rounded-full font-medium;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-button:hover {
+    background: var(--gold);
+    color: var(--bg-primary);
+    transform: scale(1.02);
+  }
+  
+  .gold-gradient-text {
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gold-border {
+    border: 2px solid transparent;
+    background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box,
+                linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark)) border-box;
+    transition: var(--theme-transition);
+  }
+  
+  /* Theme-aware utility classes */
+  .theme-bg {
+    background-color: var(--bg-primary);
+  }
+  
+  .theme-bg-secondary {
+    background-color: var(--bg-secondary);
+  }
+  
+  .theme-bg-tertiary {
+    background-color: var(--bg-tertiary);
+  }
+  
+  .theme-text {
+    color: var(--text-primary);
+  }
+  
+  .theme-text-secondary {
+    color: var(--text-secondary);
+  }
+  
+  .theme-text-muted {
+    color: var(--text-muted);
+  }
+  
+  .theme-border {
+    border-color: var(--border-primary);
+  }
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  transition: var(--theme-transition);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  border: 1px solid var(--border-primary);
+  transition: var(--theme-transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-dark);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .hover-lift {
+    transition: transform 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+  
+  .text-shadow-gold {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+  
+  /* Theme transition utility */
+  .theme-transition {
+    transition: var(--theme-transition);
+  }
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   SELECTION & FOCUS
+   ============================================ */
+
+::selection {
+  background: var(--gold);
+  color: var(--text-inverse);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   DARK MODE SPECIFIC OVERRIDES
+   ============================================ */
+
+.dark {
+  .text-gray-300 {
+    color: #D1D5DB;
+  }
+  
+  .text-gray-400 {
+    color: #9CA3AF;
+  }
+  
+  .bg-gray-800 {
+    background-color: #1F2937;
+  }
+  
+  .bg-gray-900 {
+    background-color: #111827;
+  }
+}
