@@ -1,14 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
+import { ProductQuickViewModalComponent } from '../../components/product-quick-view-modal/product-quick-view-modal.component';
 import { Product } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent, ProductQuickViewModalComponent],
   template: `
     <div class="min-h-screen pb-20">
       <!-- Hero Section -->
@@ -58,9 +59,22 @@ import { Product } from '../../core/models/product.model';
                   [product]="product"
                   (addToCart)="onAddToCart($event)"
                   (dropHint)="onDropHint($event)"
+                  (quickView)="onQuickView($event)"
                 />
               }
             </div>
+          }
+
+          <!-- Quick View Modal -->
+          @if (selectedProduct()) {
+            <app-product-quick-view-modal
+              [product]="selectedProduct()!"
+              [isOpen]="isQuickViewOpen()"
+              (closeModal)="closeQuickView()"
+              (addToCartEvent)="onAddToCartFromModal($event)"
+              (shareEvent)="onShareFromModal($event)"
+              (viewDetailsEvent)="onViewDetails($event)"
+            />
           }
 
           @if (filteredProducts().length === 0 && !productService.isLoading()) {
@@ -98,6 +112,10 @@ export class CatalogComponent {
   protected productService = inject(ProductService);
   private cartService = inject(CartService);
 
+  // Quick View Modal State
+  protected selectedProduct = signal<Product | null>(null);
+  protected isQuickViewOpen = signal(false);
+
   categories = [
     { label: 'Todos', value: 'all' },
     { label: 'Anillos', value: 'rings' },
@@ -123,5 +141,35 @@ export class CatalogComponent {
   onDropHint(product: Product): void {
     const url = this.cartService.getWhatsAppHintUrl(product);
     window.open(url, '_blank');
+  }
+
+  // Quick View Modal Handlers
+  onQuickView(product: Product): void {
+    this.selectedProduct.set(product);
+    this.isQuickViewOpen.set(true);
+  }
+
+  closeQuickView(): void {
+    this.isQuickViewOpen.set(false);
+    // Delay clearing the product to allow exit animation
+    setTimeout(() => {
+      this.selectedProduct.set(null);
+    }, 300);
+  }
+
+  onAddToCartFromModal(event: { product: Product; quantity: number }): void {
+    this.cartService.addToCart(event.product, event.quantity);
+    this.cartService.openCart();
+  }
+
+  onShareFromModal(product: Product): void {
+    const url = this.cartService.getWhatsAppHintUrl(product);
+    window.open(url, '_blank');
+  }
+
+  onViewDetails(product: Product): void {
+    // For now, just close the modal. In the future, this could navigate to a product detail page
+    this.closeQuickView();
+    console.log('Navigate to product details:', product.id);
   }
 }

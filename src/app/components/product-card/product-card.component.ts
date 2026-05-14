@@ -30,11 +30,23 @@ import { Product } from '../../core/models/product.model';
           </span>
         }
 
-        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3">
+          <!-- Quick View Button -->
+          <button 
+            (click)="onQuickView(); $event.stopPropagation()"
+            class="p-3 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm transform -translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:scale-110"
+            title="Vista Rápida"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+
           <button 
             (click)="onAddToCart()"
             [disabled]="product().stock === 0"
-            class="glass-button disabled:opacity-50 disabled:cursor-not-allowed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+            class="glass-button disabled:opacity-50 disabled:cursor-not-allowed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75"
           >
             {{ product().stock === 0 ? 'Agotado' : 'Agregar' }}
           </button>
@@ -77,6 +89,7 @@ export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly addToCart = output<Product>();
   readonly dropHint = output<Product>();
+  readonly quickView = output<Product>();
 
   private categoryLabels: Record<string, string> = {
     rings: 'Anillos',
@@ -98,5 +111,9 @@ export class ProductCardComponent {
 
   onDropHint(): void {
     this.dropHint.emit(this.product());
+  }
+
+  onQuickView(): void {
+    this.quickView.emit(this.product());
   }
 }

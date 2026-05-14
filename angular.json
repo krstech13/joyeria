@@ -30,9 +30,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -68,6 +66,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": ["kfmvc0vt-4200.usw3.devtunnels.ms"],
+            "port": 4200
+          },
           "configurations": {
             "production": {
               "buildTarget": "krs-tech:build:production"

@@ -265,6 +265,195 @@
 }
 
 /* ============================================
+   QUICK VIEW MODAL ANIMATIONS
+   ============================================ */
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+}
+
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-modal-in {
+  animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-modal-out {
+  animation: modalOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeInBackdrop 0.3s ease-out forwards;
+}
+
+/* ============================================
+   IMAGE GALLERY UTILITIES
+   ============================================ */
+
+.gallery-thumbnail {
+  @apply relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-300 cursor-pointer;
+  
+  &.active {
+    @apply border-gold opacity-100;
+  }
+  
+  &:not(.active) {
+    @apply border-transparent opacity-70;
+    
+    &:hover {
+      @apply opacity-100;
+    }
+  }
+}
+
+/* Image zoom container */
+.image-zoom-container {
+  @apply relative overflow-hidden cursor-zoom-in;
+  
+  &.zoomed {
+    @apply cursor-zoom-out;
+    
+    img {
+      @apply scale-150;
+    }
+  }
+  
+  img {
+    @apply transition-transform duration-500 ease-out;
+  }
+}
+
+/* Navigation arrows for gallery */
+.gallery-nav-btn {
+  @apply absolute top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm transition-all duration-300;
+  
+  &:hover {
+    @apply scale-110;
+  }
+  
+  &:active {
+    @apply scale-95;
+  }
+}
+
+/* ============================================
+   QUANTITY SELECTOR STYLES
+   ============================================ */
+
+.quantity-btn {
+  @apply w-10 h-10 rounded-lg border border-[var(--border-primary)] theme-text hover:bg-[var(--bg-secondary)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center;
+  
+  &:hover:not(:disabled) {
+    @apply border-gold text-gold;
+  }
+  
+  &:active:not(:disabled) {
+    @apply scale-95;
+  }
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR FOR MODAL CONTENT
+   ============================================ */
+
+.modal-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-primary);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--gold);
+  }
+}
+
+/* ============================================
+   STOCK STATUS INDICATORS
+   ============================================ */
+
+.stock-indicator {
+  @apply w-2.5 h-2.5 rounded-full;
+  
+  &.in-stock {
+    @apply bg-green-500;
+  }
+  
+  &.low-stock {
+    @apply bg-yellow-500;
+  }
+  
+  &.out-of-stock {
+    @apply bg-red-500;
+  }
+}
+
+/* ============================================
+   MODAL RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .quick-view-modal {
+    @apply max-h-[95vh] mx-2;
+    
+    .modal-content {
+      @apply flex-col;
+    }
+    
+    .gallery-section {
+      @apply w-full aspect-square;
+    }
+    
+    .info-section {
+      @apply w-full max-h-[50vh];
+    }
+  }
+}
+
+/* ============================================
+   FOCUS TRAP FOR ACCESSIBILITY
+   ============================================ */
+
+.modal-focusable {
+  &:focus-visible {
+    @apply outline-2 outline-gold outline-offset-2;
+  }
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  @apply overflow-hidden;
+}
+
+/* ============================================
    SELECTION & FOCUS
    ============================================ */
 
